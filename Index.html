@@ -59,7 +59,10 @@ body.escuro .nav .btn{border-color:#c3d1c6;color:#f1f5ee}
 .cartao::after,.fig::after{content:"+";position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:rgba(18,38,31,.8);color:#fff;display:grid;place-items:center;font-weight:700}
 .mini{display:block;aspect-ratio:16/9;background:#2b4a3c}
 .s3 .mini{aspect-ratio:2.4/1}
-.mini svg{display:block;width:100%;height:100%}
+.mini svg,.mini img,.p-img img{display:block;width:100%;height:100%}
+.mini img,.p-img img{object-fit:cover}
+.p-cred{font-size:.78rem!important;color:var(--suave);margin:.2em 0 0!important}
+.p-cred a{color:inherit}
 .rot{display:block;padding:.6em .9em .8em;font-weight:600;font-size:clamp(.9rem,2vw,1.05rem)}
 .tres{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:1.4em;margin-bottom:.4em}
 .tres p{font-size:1rem;margin:.6em 0 0}
@@ -170,7 +173,7 @@ body.escuro .nav .btn{border-color:#c3d1c6;color:#f1f5ee}
     <div class="graf"><canvas id="c-pizza"></canvas></div>
     <button class="fig" id="fig-pizza" data-k="uso_am"><span class="mini"></span><span class="rot"></span></button>
   </div>
-  <p class="aviso">Dados de exemplo. Substitua-os no bloco DADOS, no início do script.</p>
+  <p class="aviso">Gráfico com dados de exemplo (substitua no bloco DADOS). Imagens reais: lubasi (CC BY-SA 2.0) e INPE/CBERS-4 (CC BY-SA 2.0), via Wikimedia Commons.</p>
 </section>
 
 <section class="slide" data-g="torres">
@@ -194,7 +197,7 @@ body.escuro .nav .btn{border-color:#c3d1c6;color:#f1f5ee}
     <div class="graf"><canvas id="c-subida"></canvas></div>
     <button class="fig t" data-k="lavoura"><span class="mini"></span><span class="rot">Lavoura mecanizada</span></button>
   </div>
-  <p class="aviso">Dados de exemplo, em mil hectares. Substitua-os no bloco DADOS.</p>
+  <p class="aviso">Dados de exemplo, em mil hectares (substitua no bloco DADOS). Foto: Roosevelt Pinheiro/Agência Brasil (CC BY 3.0 BR), via Wikimedia Commons.</p>
 </section>
 
 <section class="slide">
@@ -215,6 +218,7 @@ body.escuro .nav .btn{border-color:#c3d1c6;color:#f1f5ee}
       <span class="p-tipo" id="p-tipo"></span>
       <h3 id="p-tit"></h3>
       <p id="p-txt"></p>
+      <p class="p-cred" id="p-cred" hidden></p>
       <div class="liga" id="p-liga"></div>
     </div>
   </div>
@@ -278,6 +282,25 @@ const SC = {
     return S('#2f7d4f', '#276b43', o); },
   protegida: () => S('#bfe3dc', '#e8f3ea', hill(100, '#12261f', 16) + trees(96, '#1f5a3c', 24, 12, 4) + rect(0, 150, 400, 75, '#b89146') + `<path d="M0 150H400" stroke="#fff" stroke-width="3" stroke-dasharray="10 8"/>` + `<path d="M150 135L190 92L230 135Z" fill="#b8742a"/>` + rect(182, 112, 16, 23, '#3a2c24'))
 };
+// ===== Fotos reais (Wikimedia Commons, licenças livres). Se não carregar, volta a ilustração. =====
+const FC = 'https://commons.wikimedia.org/wiki/Special:FilePath/';
+const FOTOS = {
+  uso_am: { arq: 'Aerial_view_of_the_Amazon_Rainforest.jpg', alt: 'Vista aérea da floresta amazônica e do Rio Solimões',
+    cred: 'Foto: lubasi (Flickr), Rio Solimões, Amazonas. CC BY-SA 2.0, via Wikimedia Commons.',
+    pag: 'File:Aerial_view_of_the_Amazon_Rainforest.jpg' },
+  uso_to: { arq: 'Irrigated_rice_plantation_at_Formoso_do_Araguaia,_Brazil.jpg', alt: 'Imagem de satélite de lavouras irrigadas em Formoso do Araguaia, Tocantins',
+    cred: 'Imagem de satélite CBERS-4: INPE, Formoso do Araguaia (TO), 2019. CC BY-SA 2.0, via Wikimedia Commons.',
+    pag: 'File:Irrigated_rice_plantation_at_Formoso_do_Araguaia,_Brazil.jpg' },
+  lavoura: { arq: 'Ronodonópolis_colheita_soja_(Roosevelt_Pinheiro)_28mar09.jpg', alt: 'Colheita mecanizada de soja em Rondonópolis, Mato Grosso',
+    cred: 'Foto: Roosevelt Pinheiro/Agência Brasil, Rondonópolis (MT), 2009. CC BY 3.0 BR, via Wikimedia Commons.',
+    pag: 'File:Ronodonópolis_colheita_soja_(Roosevelt_Pinheiro)_28mar09.jpg' }
+};
+function falhaImg(img, k) { img.parentNode.innerHTML = SC[k](); }
+function vis(k, larg) {
+  const f = FOTOS[k]; if (!f) return SC[k]();
+  return `<img src="${FC}${encodeURIComponent(f.arq).replace(/[()]/g, c => '%' + c.charCodeAt(0).toString(16).toUpperCase())}?width=${larg}" alt="${f.alt}" loading="lazy" referrerpolicy="no-referrer" onerror="falhaImg(this,'${k}')">`;
+}
+
 const INFO = {
   capa: ['Panorama', 'Entre a floresta e o cerrado', 'Duas fronteiras do avanço agropecuário: a Amazônia, ao norte, e o Cerrado, na zona de transição. Ilustração esquemática.', ['floresta', 'cerrado']],
   floresta: ['Amazonas', 'Floresta e rios', 'Em boa parte do estado os rios fazem o papel das estradas. O acesso difícil por terra ajuda a explicar a floresta ainda extensa.', ['amazonas', 'br319']],
@@ -288,10 +311,10 @@ const INFO = {
   br153: ['Caminho', 'BR-153 (Belém-Brasília)', 'Corta o Tocantins de norte a sul e abriu a região à ocupação a partir dos anos 1950 e 1960.', ['tocantins']],
   amazonas: ['Destino', 'Sul do Amazonas', 'Pastagens avançam sobre a floresta a partir de ramais e estradas, perto da divisa com Rondônia e Acre.', ['br319', 'uso_am']],
   tocantins: ['Destino', 'Tocantins e o Matopiba', 'Soja e pecuária ocupam áreas de cerrado. O estado integra o Matopiba (Maranhão, Tocantins, Piauí e Bahia).', ['br153', 'uso_to']],
-  uso_am: ['Uso da terra', 'Amazonas visto de cima', 'Mosaico em que a vegetação nativa domina e as áreas abertas aparecem em manchas. Dados de exemplo.', ['amazonas']],
-  uso_to: ['Uso da terra', 'Tocantins visto de cima', 'Mosaico mais fragmentado: pastos, lavouras e vegetação nativa lado a lado. Dados de exemplo.', ['tocantins']],
+  uso_am: ['Uso da terra', 'Amazonas visto de cima', 'Foto aérea do Rio Solimões cercado por floresta contínua, retrato da vegetação nativa que ainda domina o estado.', ['amazonas']],
+  uso_to: ['Uso da terra', 'Tocantins visto de cima', 'Imagem de satélite de Formoso do Araguaia: lavouras irrigadas em lotes quadrados de 1 km, com cerrado e pastagem ao redor.', ['tocantins']],
   migrantes: ['Migração', 'Quem chega', 'Famílias e trabalhadores chegam em ondas, por ônibus e estradas, em busca de terra, emprego e renda. Dados de exemplo.', ['sul', 'nordeste']],
-  lavoura: ['Agropecuária', 'Lavoura mecanizada', 'A mecanização permite ocupar grandes áreas com poucos trabalhadores e acelera a expansão. Dados de exemplo.', ['tocantins']],
+  lavoura: ['Agropecuária', 'Lavoura mecanizada', 'Colheitadeiras em lavoura de soja. A mecanização permite ocupar grandes áreas com poucos trabalhadores e acelera a expansão. A foto é de Rondonópolis (MT), exemplo do mesmo modelo de produção que avança no Tocantins.', ['tocantins']],
   vila: ['Chegada', 'Novos povoados', 'Onde chegam migrantes surgem vilas, comércio e novos pastos e roças ao redor.', ['migrantes']],
   estradas: ['Estradas', 'Estradas e ramais', 'Ramais saem das rodovias e formam o padrão “espinha de peixe”, que abre acesso à floresta.', ['br319', 'br153']],
   protegida: ['Contenção', 'Áreas protegidas', 'Unidades de conservação e terras indígenas mantêm a cobertura florestal, e o desmatamento costuma parar nos seus limites.', ['floresta']]
@@ -313,15 +336,18 @@ let atual = 0, ia = 0, timer = null, foco = null;
 // ----- figuras e painel -----
 function fig(b, k, legenda) {
   b.dataset.k = k;
-  b.querySelector('.mini').innerHTML = SC[k]();
+  b.querySelector('.mini').innerHTML = vis(k, 640);
   if (legenda) b.querySelector('.rot').textContent = INFO[k][1];
 }
 function abrir(k) {
   const [tipo, tit, txt, rel] = INFO[k];
-  document.getElementById('p-img').innerHTML = SC[k]();
+  document.getElementById('p-img').innerHTML = vis(k, 1100);
   document.getElementById('p-tipo').textContent = tipo;
   document.getElementById('p-tit').textContent = tit;
   document.getElementById('p-txt').textContent = txt;
+  const cr = document.getElementById('p-cred'), f = FOTOS[k];
+  cr.hidden = !f;
+  if (f) { cr.textContent = f.cred + ' '; const a = document.createElement('a'); a.href = 'https://commons.wikimedia.org/wiki/' + f.pag; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Página da imagem'; cr.append(a); }
   const l = document.getElementById('p-liga'); l.innerHTML = '';
   if (rel && rel.length) {
     l.append('Veja também:');
