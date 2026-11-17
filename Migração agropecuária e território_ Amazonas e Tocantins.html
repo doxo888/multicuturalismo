@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Migração agropecuária e território: Amazonas e Tocantins</title>
+<style>
+:root{--fundo:#e7ece3;--tinta:#1c2a23;--suave:#51655a;--floresta:#12261f;--am:#1f6f78;--to:#b8742a;--nav:78px}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--fundo);color:var(--tinta);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;overflow:hidden}
+body.escuro{background:var(--floresta)}
+.slide{position:fixed;inset:0;display:none;flex-direction:column;justify-content:center;justify-content:safe center;
+  padding:calc(4vh + env(safe-area-inset-top,0px)) max(6vw,env(safe-area-inset-right,0px)) calc(var(--nav) + env(safe-area-inset-bottom,0px)) max(6vw,env(safe-area-inset-left,0px));overflow-y:auto;overflow-x:hidden}
+.slide.on{display:flex}
+.slide>*{flex-shrink:0;min-width:0}
+h1,h2,h3{overflow-wrap:break-word}
+h1,h2{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;font-weight:700;margin:0 0 .6em;line-height:1.1;max-width:22em}
+h1{font-size:clamp(1.9rem,6.5vw,4rem)}
+h2{font-size:clamp(1.4rem,4.2vw,2.4rem)}
+p,li{font-size:clamp(1rem,2.3vw,1.2rem);line-height:1.55;max-width:38em;margin:0 0 .8em}
+.capa{background:var(--floresta);color:#f1f5ee}
+.capa::before,.capa::after{content:"";position:fixed;top:0;bottom:0;width:2.2vw}
+.capa::before{left:0;background:var(--am)}
+.capa::after{left:2.2vw;background:var(--to)}
+.capa p{color:#c3d1c6}
+.split{display:grid;grid-template-columns:1.1fr 1fr;gap:5vw;align-items:center;padding-left:3vw}
+.pergunta{font-style:italic;color:var(--suave)}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:4vw;margin:.6em 0}
+.duas h2{font-size:1.5rem;margin:.7em 0 .3em}
+.duas p{margin-bottom:.4em}
+.ico{width:1.1em;height:1.1em;vertical-align:-.12em;margin-right:.35em}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:.6em;margin-bottom:.8em}
+.seg{display:inline-flex;border:2px solid var(--tinta);border-radius:99px;overflow:hidden}
+button{font:inherit;cursor:pointer}
+.seg button{border:0;background:none;padding:.55em 1.1em;color:var(--tinta);min-height:44px}
+.seg button.on{background:var(--tinta);color:var(--fundo)}
+.btn{border:2px solid var(--tinta);background:none;border-radius:99px;padding:.5em 1.1em;min-height:44px;color:var(--tinta)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--to);outline-offset:2px}
+.com{display:grid;grid-template-columns:1fr minmax(170px,28%);gap:2vw;align-items:start}
+.graf{position:relative;height:clamp(240px,50vh,460px);min-width:0}
+input[type=range]{flex:1;min-width:140px;accent-color:var(--am);min-height:44px}
+.aviso{font-size:.85rem;color:var(--suave);margin:.6em 0 0}
+#rotulo{font:700 clamp(2rem,7vw,3.4rem)/1 'Iowan Old Style',Georgia,serif;color:var(--am)}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:1vh max(5vw,env(safe-area-inset-right,0px)) calc(1vh + env(safe-area-inset-bottom,0px)) max(5vw,env(safe-area-inset-left,0px));background:var(--fundo);border-top:1px solid #c5d0c3}
+.nav span{color:var(--suave);font-variant-numeric:tabular-nums}
+body.escuro .nav{background:var(--floresta);border-top-color:#2b4a3c}
+body.escuro .nav span{color:#c3d1c6}
+body.escuro .nav .btn{border-color:#c3d1c6;color:#f1f5ee}
+
+/* cartões e figuras clicáveis */
+.cartao,.fig{--c:#e0a458;position:relative;display:block;width:100%;padding:0;text-align:left;color:inherit;border-radius:14px;overflow:hidden;transition:transform .2s;box-shadow:inset 0 -4px 0 var(--c)}
+.cartao{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2)}
+.cartao[data-tipo="Caminho"]{--c:#e8d9b0}
+.cartao[data-tipo="Destino"]{--c:#7fd0d8}
+.fig{--c:var(--am);background:#fff;border:1px solid #c5d0c3;color:var(--tinta)}
+.fig.t{--c:var(--to)}
+.cartao:hover,.fig:hover{transform:translateY(-3px)}
+.cartao::after,.fig::after{content:"+";position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:rgba(18,38,31,.8);color:#fff;display:grid;place-items:center;font-weight:700}
+.mini{display:block;aspect-ratio:16/9;background:#2b4a3c}
+.s3 .mini{aspect-ratio:2.4/1}
+.mini svg{display:block;width:100%;height:100%}
+.rot{display:block;padding:.6em .9em .8em;font-weight:600;font-size:clamp(.9rem,2vw,1.05rem)}
+.tres{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:1.4em;margin-bottom:.4em}
+.tres p{font-size:1rem;margin:.6em 0 0}
+
+/* slide 3 */
+.s3{color:#f1f5ee;background:radial-gradient(circle at 12% 18%,#1f6f7866,transparent 45%),radial-gradient(circle at 92% 88%,#b8742a55,transparent 45%),linear-gradient(160deg,#10231c,#1a4333 60%,#25523b)}
+.s3 .dica{color:#c3d1c6;margin-bottom:1.1em}
+.s3 .aviso{color:#a9bdaf}
+.rota{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:1.2vw;align-items:center;max-width:1100px}
+.col{display:flex;flex-direction:column;gap:.9em}
+.col-t{margin:0 0 .1em;font:700 .8rem system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#c3d1c6}
+.seta3{display:flex;align-items:center;justify-content:center;color:#e8d9b0}
+.seta3 svg{width:44px;height:28px;fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;animation:empurra 1.8s ease-in-out infinite}
+@keyframes empurra{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+
+/* painel */
+.painel{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:max(3vh,env(safe-area-inset-top,0px)) max(4vw,env(safe-area-inset-right,0px)) max(3vh,env(safe-area-inset-bottom,0px)) max(4vw,env(safe-area-inset-left,0px));background:rgba(8,20,14,.72);backdrop-filter:blur(3px)}
+.painel[hidden]{display:none}
+.p-card{position:relative;width:min(560px,100%);max-height:100%;overflow-y:auto;background:#f4f1e8;color:var(--tinta);border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.45);animation:entra .28s ease-out}
+.p-img{aspect-ratio:16/9;background:#ccc}
+.p-img svg{display:block;width:100%;height:100%}
+.p-x{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(18,38,31,.82);color:#fff;font-size:1.2rem;line-height:1}
+.p-corpo{padding:1.1em 1.4em 1.4em}
+.p-tipo{display:inline-block;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.25em .8em;border-radius:99px;background:var(--floresta);color:#e8d9b0}
+.p-corpo h3{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;font-size:1.7rem;line-height:1.15;margin:.45em 0 .5em}
+.p-corpo p{font-size:1rem;max-width:none}
+.liga{display:flex;flex-wrap:wrap;gap:.5em;align-items:center;margin-top:1em;font-size:.9rem;color:var(--suave)}
+.liga button{border:2px solid var(--tinta);background:none;border-radius:99px;padding:.4em .9em;min-height:40px;color:var(--tinta);font-size:.9rem}
+.liga button:hover{background:var(--tinta);color:var(--fundo)}
+@keyframes entra{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.p-card,.seta3 svg{animation:none}.cartao,.fig{transition:none}}
+
+@media (max-width:760px){
+  .split,.duas,.com{grid-template-columns:1fr}
+  .split{padding-left:4vw;gap:1.2em}
+  .rota{grid-template-columns:1fr;gap:.5em}
+  .seta3{transform:rotate(90deg);height:36px}
+  .cartao{display:grid;grid-template-columns:42% 1fr;align-items:center;box-shadow:inset 4px 0 0 var(--c)}
+  .cartao .mini{aspect-ratio:4/3;height:100%}
+  .cartao::after{top:6px;right:6px}
+  .com .fig{max-width:420px}
+}
+@media (orientation:landscape) and (max-height:520px){
+  :root{--nav:64px}
+  .p-card{display:grid;grid-template-columns:1fr 1fr;width:min(900px,100%)}
+  .p-img{aspect-ratio:auto;min-height:100%}
+  .graf{height:max(220px,60vh)}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-arvore" viewBox="0 0 48 48"><circle cx="24" cy="17" r="12" fill="currentColor"/><circle cx="14" cy="26" r="8" fill="currentColor"/><circle cx="34" cy="26" r="8" fill="currentColor"/><rect x="22" y="28" width="4" height="16" rx="2" fill="currentColor"/></symbol>
+<symbol id="i-broto" viewBox="0 0 48 48"><path d="M24 44V20" stroke="currentColor" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M24 28C14 28 8 22 8 12c10 0 16 6 16 16zM24 22c0-8 6-14 16-14 0 10-6 14-16 14z" fill="currentColor"/></symbol>
+</defs></svg>
+
+<section class="slide capa on">
+  <div class="split">
+    <div>
+      <h1>Migração agropecuária e território</h1>
+      <p>A dinâmica entre fluxos de migrantes, expansão da agropecuária e uso da terra no Amazonas e no Tocantins.</p>
+      <p>Use as setas do teclado, os botões abaixo ou deslize a tela.</p>
+    </div>
+    <button class="fig" data-k="capa"><span class="mini"></span><span class="rot">Entre a floresta e o cerrado</span></button>
+  </div>
+</section>
+
+<section class="slide">
+  <h2>Dois territórios, duas frentes</h2>
+  <div class="duas">
+    <div class="a"><button class="fig" data-k="floresta"><span class="mini"></span><span class="rot">Floresta e rios</span></button>
+      <h2 style="color:var(--am)"><svg class="ico"><use href="#i-arvore"/></svg>Amazonas</h2><p>Maior estado em extensão, com floresta ainda muito preservada. A pressão agropecuária se concentra no sul, perto de eixos como a BR-319 e da divisa com Acre e Rondônia.</p></div>
+    <div class="t"><button class="fig t" data-k="cerrado"><span class="mini"></span><span class="rot">Cerrado em transição</span></button>
+      <h2 style="color:var(--to)"><svg class="ico"><use href="#i-broto"/></svg>Tocantins</h2><p>Criado em 1988, na transição entre Amazônia e Cerrado. Integra a fronteira agrícola do Matopiba, com soja e pecuária avançando sobre o cerrado.</p></div>
+  </div>
+  <p class="pergunta">Como o fluxo de migrantes e a expansão agropecuária redesenham o uso do território?</p>
+</section>
+
+<section class="slide s3">
+  <h2>De onde vem o avanço</h2>
+  <p class="dica">Toque em qualquer cartão para ver a imagem e os detalhes.</p>
+  <div class="rota">
+    <div class="col">
+      <h3 class="col-t">1 · Origem</h3>
+      <button class="cartao" data-k="sul" data-tipo="Origem"><span class="mini"></span><span class="rot">Sul e Centro-Oeste</span></button>
+      <button class="cartao" data-k="nordeste" data-tipo="Origem"><span class="mini"></span><span class="rot">Nordeste</span></button>
+    </div>
+    <div class="seta3" aria-hidden="true"><svg viewBox="0 0 44 28"><path d="M4 14h34M27 5l10 9-10 9"/></svg></div>
+    <div class="col">
+      <h3 class="col-t">2 · Caminho</h3>
+      <button class="cartao" data-k="br319" data-tipo="Caminho"><span class="mini"></span><span class="rot">BR-319</span></button>
+      <button class="cartao" data-k="br153" data-tipo="Caminho"><span class="mini"></span><span class="rot">BR-153 (Belém-Brasília)</span></button>
+    </div>
+    <div class="seta3" aria-hidden="true"><svg viewBox="0 0 44 28"><path d="M4 14h34M27 5l10 9-10 9"/></svg></div>
+    <div class="col">
+      <h3 class="col-t">3 · Destino</h3>
+      <button class="cartao" data-k="amazonas" data-tipo="Destino"><span class="mini"></span><span class="rot">Sul do Amazonas</span></button>
+      <button class="cartao" data-k="tocantins" data-tipo="Destino"><span class="mini"></span><span class="rot">Tocantins e o Matopiba</span></button>
+    </div>
+  </div>
+  <p class="aviso">Ilustrações esquemáticas. Confirme origens e rotas com os dados da sua pesquisa.</p>
+</section>
+
+<section class="slide" data-g="pizza">
+  <h2>Como o território é usado</h2>
+  <div class="ctl"><div class="seg" data-for="pizza"><button class="on" data-uf="Amazonas">Amazonas</button><button data-uf="Tocantins">Tocantins</button></div></div>
+  <div class="com">
+    <div class="graf"><canvas id="c-pizza"></canvas></div>
+    <button class="fig" id="fig-pizza" data-k="uso_am"><span class="mini"></span><span class="rot"></span></button>
+  </div>
+  <p class="aviso">Dados de exemplo. Substitua-os no bloco DADOS, no início do script.</p>
+</section>
+
+<section class="slide" data-g="torres">
+  <h2>Migrantes a cada período</h2>
+  <div class="ctl"><div class="seg" data-for="torres"><button class="on" data-uf="Amazonas">Amazonas</button><button data-uf="Tocantins">Tocantins</button></div></div>
+  <div class="com">
+    <div class="graf"><canvas id="c-torres"></canvas></div>
+    <button class="fig t" data-k="migrantes"><span class="mini"></span><span class="rot">Quem chega</span></button>
+  </div>
+  <p class="aviso">Dados de exemplo, em milhares de pessoas. Substitua-os no bloco DADOS.</p>
+</section>
+
+<section class="slide" data-g="subida">
+  <h2>A área agropecuária sobe ano a ano</h2>
+  <div class="ctl">
+    <button class="btn" id="play">Reproduzir</button>
+    <input type="range" id="ano" min="0" value="0" aria-label="Ano">
+    <strong id="rotulo"></strong>
+  </div>
+  <div class="com">
+    <div class="graf"><canvas id="c-subida"></canvas></div>
+    <button class="fig t" data-k="lavoura"><span class="mini"></span><span class="rot">Lavoura mecanizada</span></button>
+  </div>
+  <p class="aviso">Dados de exemplo, em mil hectares. Substitua-os no bloco DADOS.</p>
+</section>
+
+<section class="slide">
+  <h2>O que a dinâmica indica</h2>
+  <div class="tres">
+    <div><button class="fig" data-k="vila"><span class="mini"></span><span class="rot">Novos povoados</span></button><p>A chegada de migrantes costuma acompanhar a abertura de novas áreas para pasto e lavoura.</p></div>
+    <div><button class="fig t" data-k="estradas"><span class="mini"></span><span class="rot">Estradas e ramais</span></button><p>Estradas e estrutura fundiária decidem onde a frente agropecuária avança primeiro.</p></div>
+    <div><button class="fig" data-k="protegida"><span class="mini"></span><span class="rot">Áreas protegidas</span></button><p>Unidades de conservação e terras indígenas funcionam como contenção territorial.</p></div>
+  </div>
+  <p class="aviso">Fontes para os dados reais: IBGE (Censo Agropecuário e Censo Demográfico), MapBiomas e INPE/PRODES.</p>
+</section>
+
+<div class="painel" id="painel" hidden role="dialog" aria-modal="true" aria-labelledby="p-tit">
+  <div class="p-card">
+    <div class="p-img" id="p-img"></div>
+    <button class="p-x" id="p-x" aria-label="Fechar">✕</button>
+    <div class="p-corpo">
+      <span class="p-tipo" id="p-tipo"></span>
+      <h3 id="p-tit"></h3>
+      <p id="p-txt"></p>
+      <div class="liga" id="p-liga"></div>
+    </div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="btn" id="ant">Anterior</button>
+  <span id="cont"></span>
+  <button class="btn" id="prox">Próximo</button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ===== DADOS: troque os valores de exemplo pelos da sua pesquisa =====
+const DADOS = {
+  uso: { labels: ['Vegetação nativa', 'Pastagem', 'Agricultura', 'Outros'],
+    Amazonas: [93, 3, 1, 3], Tocantins: [55, 30, 8, 7] },
+  periodos: ['2000–05', '2005–10', '2010–15', '2015–20', '2020–24'],
+  migracao: { Amazonas: [12, 18, 15, 22, 28], Tocantins: [35, 28, 20, 24, 30] },
+  anos: [2000, 2005, 2010, 2015, 2020, 2024],
+  area: { Amazonas: [900, 1100, 1300, 1700, 2200, 2600], Tocantins: [6500, 7000, 7600, 8200, 8900, 9500] }
+};
+// =====================================================================
+
+// ===== Ilustrações (SVG esquemático, uma por assunto) =====
+let uid = 0;
+const S = (a, b, body) => { const i = 'g' + uid++;
+  return `<svg viewBox="0 0 400 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="400" height="225" fill="url(#${i})"/>${body}</svg>`; };
+const rect = (x, y, w, h, c) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`;
+const sun = (x, y, r, c) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/>`;
+const hill = (y, c, h = 30) => `<path d="M0 ${y}Q100 ${y - h} 200 ${y}T400 ${y}V225H0Z" fill="${c}"/>`;
+const tree = (x, y, s, c) => `<rect x="${x - s / 6}" y="${y}" width="${s / 3}" height="${s * .8}" fill="#4a3426"/><circle cx="${x}" cy="${y}" r="${s}" fill="${c}"/>`;
+const trees = (y, c, n, s, k) => { let o = ''; for (let i = 0; i < n; i++) o += tree((i * 61 + k * 17) % 400, y + (i * 13 + k) % 24, s + i % 3 * 2, c); return o; };
+const rows = (y, a, b) => { let o = rect(0, y, 400, 225 - y, b); for (let i = -8; i <= 8; i++) o += `<path d="M${200 + i * 10} ${y}L${200 + i * 60} 225" stroke="${a}" stroke-width="5"/>`; return o; };
+const road = (c, y) => `<path d="M194 ${y}H206L275 225H125Z" fill="${c}"/><path d="M200 ${y + 5}V225" stroke="#f1e7b5" stroke-width="3" stroke-dasharray="8 10"/>`;
+const cow = (x, y) => `<rect x="${x}" y="${y}" width="16" height="9" rx="3" fill="#f3efe6"/><rect x="${x + 2}" y="${y + 8}" width="2.5" height="6" fill="#f3efe6"/><rect x="${x + 12}" y="${y + 8}" width="2.5" height="6" fill="#f3efe6"/><circle cx="${x + 17}" cy="${y + 3}" r="3.5" fill="#3a2c24"/>`;
+const person = (x, y, c) => `<circle cx="${x}" cy="${y}" r="5" fill="${c}"/><path d="M${x} ${y + 5}V${y + 22}M${x} ${y + 9}l-7 9M${x} ${y + 9}l7 7M${x} ${y + 22}l-6 12M${x} ${y + 22}l6 12" stroke="${c}" stroke-width="4" stroke-linecap="round" fill="none"/><rect x="${x + 4}" y="${y + 7}" width="9" height="13" rx="3" fill="#e0a458"/>`;
+const truck = (x, y) => rect(x, y, 40, 18, '#e8d9b0') + rect(x + 40, y + 5, 14, 13, '#b8742a') + `<circle cx="${x + 10}" cy="${y + 19}" r="5" fill="#222"/><circle cx="${x + 44}" cy="${y + 19}" r="5" fill="#222"/>`;
+const casa = (x, y, c) => rect(x, y, 34, 24, c) + `<path d="M${x - 4} ${y}L${x + 17} ${y - 16}L${x + 38} ${y}Z" fill="#7a3b26"/>` + rect(x + 13, y + 10, 8, 14, '#3a2c24');
+const patch = (k, cs) => { let s = k, o = ''; const r = () => (s = s * 16807 % 2147483647) / 2147483647;
+  for (let y = 0; y < 225; y += 25) for (let x = 0; x < 400; x += 40) o += rect(x, y, 39, 24, cs[r() * cs.length | 0]); return o; };
+const galho = (x, y) => `<path d="M${x} ${y}V${y - 28}M${x} ${y - 14}l-12-14M${x} ${y - 18}l12-12" stroke="#5a3b28" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+const SC = {
+  capa: () => S('#f2c879', '#d8e8c8', sun(300, 90, 30, '#fff3c4') + hill(125, '#1f5a3c', 22) + trees(118, '#2f7d4f', 12, 9, 1) + hill(155, '#a98638', 14) + `<path d="M0 195Q120 165 220 190T400 175V225H0Z" fill="#1f6f78"/>`),
+  floresta: () => S('#bfe3dc', '#e8f3ea', sun(80, 50, 20, '#fff') + hill(100, '#12261f', 18) + trees(98, '#1f5a3c', 26, 11, 2) + `<path d="M0 170Q100 140 220 165T400 150V225H0Z" fill="#1f6f78"/>` + trees(185, '#2f7d4f', 8, 14, 5)),
+  cerrado: () => S('#f6d9a0', '#fbeed0', sun(90, 60, 24, '#fff') + hill(120, '#c9a24f') + hill(150, '#a98638') + tree(60, 140, 9, '#7a8a3a') + tree(160, 150, 11, '#7a8a3a') + tree(260, 138, 8, '#7a8a3a') + tree(340, 160, 12, '#7a8a3a') + tree(220, 185, 14, '#7a8a3a')),
+  sul: () => S('#bfe0f0', '#f4f0d0', hill(110, '#9bb85a') + rows(110, '#d9b84a', '#c9a93f') + rect(290, 55, 24, 62, '#c9d1d4') + `<circle cx="302" cy="55" r="12" fill="#a9b3b7"/>` + rect(318, 72, 24, 46, '#b6bfc3') + `<circle cx="330" cy="72" r="12" fill="#98a2a6"/>`),
+  nordeste: () => S('#f4a259', '#f7d9a3', sun(310, 70, 38, '#fff0c0') + hill(130, '#c98b4a') + rect(0, 150, 400, 75, '#b9803f') + galho(80, 150) + galho(140, 165) + galho(330, 160) + person(230, 145, '#3a2c24')),
+  br319: () => S('#d7eee6', '#eef6ee', hill(95, '#12261f', 20) + trees(92, '#1f5a3c', 26, 11, 3) + rect(0, 110, 400, 115, '#1f5a3c') + trees(150, '#2f7d4f', 14, 15, 8) + road('#4b4b4b', 100)),
+  br153: () => S('#f6b26b', '#f9e2b5', sun(200, 85, 22, '#fff3c4') + hill(100, '#c9a24f') + rect(0, 105, 400, 120, '#b89146') + road('#3f3f3f', 105) + truck(165, 150)),
+  amazonas: () => S('#cfe8df', '#eaf4ec', hill(100, '#12261f', 16) + trees(96, '#1f5a3c', 22, 11, 7) + `<path d="M0 150Q200 135 400 150V225H0Z" fill="#9aa84a"/>` + tree(40, 160, 12, '#1f5a3c') + cow(250, 175) + cow(110, 190) + cow(310, 200)),
+  tocantins: () => S('#bfe0f0', '#f6ecc8', sun(320, 50, 20, '#fff3c4') + hill(90, '#b8742a', 18) + rows(105, '#4f8a3a', '#6fa046')),
+  uso_am: () => S('#2f7d4f', '#276b43', patch(3, ['#2f7d4f', '#2f7d4f', '#276b43', '#2f7d4f', '#1f5a3c', '#b8742a'])),
+  uso_to: () => S('#2f7d4f', '#276b43', patch(5, ['#2f7d4f', '#b8742a', '#d2b04a', '#b8742a', '#8a9a90', '#2f7d4f'])),
+  migrantes: () => S('#e8d9b0', '#f2ead2', hill(125, '#c9b27a') + rect(0, 150, 400, 75, '#b89d62') + person(70, 125, '#3a2c24') + person(110, 130, '#1f6f78') + person(150, 125, '#7a3b26') + rect(250, 112, 100, 44, '#1f6f78') + rect(258, 120, 18, 14, '#d7eef0') + rect(282, 120, 18, 14, '#d7eef0') + rect(306, 120, 18, 14, '#d7eef0') + `<circle cx="274" cy="158" r="8" fill="#222"/><circle cx="334" cy="158" r="8" fill="#222"/>`),
+  lavoura: () => S('#f08a4b', '#f8d9a0', sun(200, 95, 36, '#fff0c0') + hill(110, '#6b7a3b', 10) + rows(110, '#3f6b2a', '#556f2f') + rect(250, 140, 44, 22, '#d94f30') + rect(268, 126, 20, 16, '#f1e7b5') + `<circle cx="262" cy="168" r="13" fill="#222"/><circle cx="294" cy="172" r="8" fill="#222"/>`),
+  vila: () => S('#cfe8f0', '#f4efdc', hill(120, '#9bb85a') + rect(0, 140, 400, 85, '#c9b27a') + casa(70, 125, '#f1e7b5') + casa(160, 130, '#e0a458') + casa(250, 125, '#d7eef0') + tree(350, 120, 16, '#2f7d4f') + truck(40, 185)),
+  estradas: () => { let o = '<path d="M200 0V225" stroke="#d9c58a" stroke-width="7"/>';
+    for (let y = 14; y < 225; y += 26) { const d = (y % 3 ? 1 : -1) * (50 + y % 40);
+      o += `<path d="M200 ${y}H${200 + d}" stroke="#d9c58a" stroke-width="3"/>` + rect(d > 0 ? 200 + d - 30 : 200 + d, y - 8, 30, 16, '#b8742a'); }
+    return S('#2f7d4f', '#276b43', o); },
+  protegida: () => S('#bfe3dc', '#e8f3ea', hill(100, '#12261f', 16) + trees(96, '#1f5a3c', 24, 12, 4) + rect(0, 150, 400, 75, '#b89146') + `<path d="M0 150H400" stroke="#fff" stroke-width="3" stroke-dasharray="10 8"/>` + `<path d="M150 135L190 92L230 135Z" fill="#b8742a"/>` + rect(182, 112, 16, 23, '#3a2c24'))
+};
+const INFO = {
+  capa: ['Panorama', 'Entre a floresta e o cerrado', 'Duas fronteiras do avanço agropecuário: a Amazônia, ao norte, e o Cerrado, na zona de transição. Ilustração esquemática.', ['floresta', 'cerrado']],
+  floresta: ['Amazonas', 'Floresta e rios', 'Em boa parte do estado os rios fazem o papel das estradas. O acesso difícil por terra ajuda a explicar a floresta ainda extensa.', ['amazonas', 'br319']],
+  cerrado: ['Tocantins', 'Cerrado em transição', 'Terreno plano e aberto, atraente para lavoura mecanizada e pastagem. É onde a fronteira agrícola avançou mais rápido.', ['tocantins', 'br153']],
+  sul: ['Origem', 'Sul e Centro-Oeste', 'Regiões de agricultura mecanizada. A valorização da terra e a busca por áreas mais baratas empurram produtores para o Norte.', ['br153', 'tocantins']],
+  nordeste: ['Origem', 'Nordeste', 'Seca, falta de terra e busca por trabalho levaram famílias a migrar para o Norte e o Centro-Oeste.', ['br153']],
+  br319: ['Caminho', 'BR-319', 'Liga Manaus a Porto Velho. Trechos em más condições mantêm a região relativamente isolada, e melhorias tendem a atrair ocupação.', ['amazonas']],
+  br153: ['Caminho', 'BR-153 (Belém-Brasília)', 'Corta o Tocantins de norte a sul e abriu a região à ocupação a partir dos anos 1950 e 1960.', ['tocantins']],
+  amazonas: ['Destino', 'Sul do Amazonas', 'Pastagens avançam sobre a floresta a partir de ramais e estradas, perto da divisa com Rondônia e Acre.', ['br319', 'uso_am']],
+  tocantins: ['Destino', 'Tocantins e o Matopiba', 'Soja e pecuária ocupam áreas de cerrado. O estado integra o Matopiba (Maranhão, Tocantins, Piauí e Bahia).', ['br153', 'uso_to']],
+  uso_am: ['Uso da terra', 'Amazonas visto de cima', 'Mosaico em que a vegetação nativa domina e as áreas abertas aparecem em manchas. Dados de exemplo.', ['amazonas']],
+  uso_to: ['Uso da terra', 'Tocantins visto de cima', 'Mosaico mais fragmentado: pastos, lavouras e vegetação nativa lado a lado. Dados de exemplo.', ['tocantins']],
+  migrantes: ['Migração', 'Quem chega', 'Famílias e trabalhadores chegam em ondas, por ônibus e estradas, em busca de terra, emprego e renda. Dados de exemplo.', ['sul', 'nordeste']],
+  lavoura: ['Agropecuária', 'Lavoura mecanizada', 'A mecanização permite ocupar grandes áreas com poucos trabalhadores e acelera a expansão. Dados de exemplo.', ['tocantins']],
+  vila: ['Chegada', 'Novos povoados', 'Onde chegam migrantes surgem vilas, comércio e novos pastos e roças ao redor.', ['migrantes']],
+  estradas: ['Estradas', 'Estradas e ramais', 'Ramais saem das rodovias e formam o padrão “espinha de peixe”, que abre acesso à floresta.', ['br319', 'br153']],
+  protegida: ['Contenção', 'Áreas protegidas', 'Unidades de conservação e terras indígenas mantêm a cobertura florestal, e o desmatamento costuma parar nos seus limites.', ['floresta']]
+};
+
+const COR = { Amazonas: '#1f6f78', Tocantins: '#b8742a' };
+const reduzir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+Chart.defaults.color = '#1c2a23';
+Chart.defaults.font.size = 14;
+Chart.defaults.borderColor = '#d3dcd1';
+Chart.defaults.animation.duration = reduzir ? 0 : 1000;
+
+const slides = [...document.querySelectorAll('.slide')];
+const painel = document.getElementById('painel');
+const estado = { pizza: 'Amazonas', torres: 'Amazonas' };
+const graficos = {};
+let atual = 0, ia = 0, timer = null, foco = null;
+
+// ----- figuras e painel -----
+function fig(b, k, legenda) {
+  b.dataset.k = k;
+  b.querySelector('.mini').innerHTML = SC[k]();
+  if (legenda) b.querySelector('.rot').textContent = INFO[k][1];
+}
+function abrir(k) {
+  const [tipo, tit, txt, rel] = INFO[k];
+  document.getElementById('p-img').innerHTML = SC[k]();
+  document.getElementById('p-tipo').textContent = tipo;
+  document.getElementById('p-tit').textContent = tit;
+  document.getElementById('p-txt').textContent = txt;
+  const l = document.getElementById('p-liga'); l.innerHTML = '';
+  if (rel && rel.length) {
+    l.append('Veja também:');
+    rel.forEach(r => { const b = document.createElement('button'); b.textContent = INFO[r][1]; b.onclick = () => abrir(r); l.append(b); });
+  }
+  if (painel.hidden) foco = document.activeElement;
+  painel.hidden = false;
+  document.getElementById('p-x').focus();
+  painel.querySelector('.p-card').scrollTop = 0;
+}
+function fecharPainel(devolver = true) {
+  if (painel.hidden) return;
+  painel.hidden = true;
+  if (devolver && foco && document.contains(foco)) foco.focus();
+}
+document.getElementById('p-x').onclick = () => fecharPainel();
+painel.addEventListener('click', e => { if (e.target === painel) fecharPainel(); });
+document.addEventListener('click', e => { const b = e.target.closest('[data-k]'); if (b) abrir(b.dataset.k); });
+document.querySelectorAll('[data-k]').forEach(b => fig(b, b.dataset.k, b.id === 'fig-pizza'));
+
+// ----- gráficos -----
+function novo(id, cfg) {
+  if (graficos[id]) graficos[id].destroy();
+  graficos[id] = new Chart(document.getElementById('c-' + id), cfg);
+}
+const base = { maintainAspectRatio: false };
+const grad = (c, cor) => {
+  const a = c.chart.chartArea; if (!a) return cor;
+  const g = c.chart.ctx.createLinearGradient(0, a.bottom, 0, a.top);
+  g.addColorStop(0, cor + '55'); g.addColorStop(1, cor); return g;
+};
+Chart.register({ id: 'rotulos', afterDatasetsDraw(c) {
+  if (c.config.type !== 'bar') return;
+  const x = c.ctx; x.save(); x.font = '600 ' + (c.width < 420 ? 12 : 15) + 'px system-ui'; x.fillStyle = '#1c2a23'; x.textAlign = 'center';
+  c.getDatasetMeta(0).data.forEach((b, i) => x.fillText(Math.round(c.data.datasets[0].data[i]).toLocaleString('pt-BR'), b.x, b.y - 8));
+  x.restore();
+} }, { id: 'centro', afterDraw(c) {
+  if (c.config.type !== 'doughnut') return;
+  const m = c.getDatasetMeta(0).data[0]; if (!m) return;
+  const t = Math.max(18, Math.min(38, m.innerRadius * .42));
+  const x = c.ctx; x.save(); x.textAlign = 'center';
+  x.fillStyle = '#1c2a23'; x.font = '700 ' + t + 'px Georgia,serif'; x.fillText(c.data.datasets[0].data[0] + '%', m.x, m.y + t * .15);
+  x.fillStyle = '#51655a'; x.font = Math.max(11, t * .36) + 'px system-ui'; x.fillText('vegetação nativa', m.x, m.y + t * .75);
+  x.restore();
+} });
+
+function pizza() {
+  novo('pizza', { type: 'doughnut', data: { labels: DADOS.uso.labels,
+    datasets: [{ data: DADOS.uso[estado.pizza], backgroundColor: ['#2f7d4f', '#b8742a', '#d2b04a', '#8a9a90'], borderWidth: 0, borderRadius: 8, spacing: 3, hoverOffset: 12 }] },
+    options: { ...base, cutout: '62%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 14, boxWidth: 10 } },
+      tooltip: { callbacks: { label: c => ' ' + c.label + ': ' + c.parsed + '%' } } } } });
+}
+function torres() {
+  const uf = estado.torres;
+  novo('torres', { type: 'bar', data: { labels: DADOS.periodos,
+    datasets: [{ label: 'Migrantes (milhares), ' + uf, data: DADOS.migracao[uf], backgroundColor: c => grad(c, COR[uf]), borderRadius: 12, borderSkipped: false }] },
+    options: { ...base, layout: { padding: { top: 24 } }, plugins: { legend: { display: false } },
+      animation: { delay: c => reduzir ? 0 : c.dataIndex * 160, duration: reduzir ? 0 : 900, easing: 'easeOutBack' },
+      scales: { y: { beginAtZero: true, border: { display: false }, title: { display: true, text: 'milhares de pessoas' } }, x: { grid: { display: false } } } } });
+}
+const valores = () => ['Amazonas', 'Tocantins'].map(u => DADOS.area[u][ia]);
+function rotular() {
+  document.getElementById('rotulo').textContent = DADOS.anos[ia];
+  document.getElementById('ano').value = ia;
+}
+function subida() {
+  const maximo = Math.max(...DADOS.area.Amazonas, ...DADOS.area.Tocantins) * 1.15;
+  novo('subida', { type: 'bar', data: { labels: ['Amazonas', 'Tocantins'],
+    datasets: [{ data: valores(), backgroundColor: c => grad(c, [COR.Amazonas, COR.Tocantins][c.dataIndex]), borderRadius: 14, borderSkipped: false }] },
+    options: { ...base, layout: { padding: { top: 24 } }, animation: { duration: reduzir ? 0 : 700, easing: 'easeOutCubic' }, plugins: { legend: { display: false } },
+      scales: { y: { min: 0, max: maximo, border: { display: false }, title: { display: true, text: 'mil hectares' } }, x: { grid: { display: false } } } } });
+  rotular();
+}
+function irAno(i) {
+  ia = i; rotular();
+  graficos.subida.data.datasets[0].data = valores();
+  graficos.subida.update();
+}
+function parar() {
+  clearInterval(timer); timer = null;
+  document.getElementById('play').textContent = 'Reproduzir';
+}
+document.getElementById('play').onclick = () => {
+  if (timer) return parar();
+  if (ia >= DADOS.anos.length - 1) irAno(0);
+  document.getElementById('play').textContent = 'Pausar';
+  timer = setInterval(() => { if (ia >= DADOS.anos.length - 1) return parar(); irAno(ia + 1); }, 900);
+};
+const faixa = document.getElementById('ano');
+faixa.max = DADOS.anos.length - 1;
+faixa.oninput = () => { parar(); irAno(+faixa.value); };
+
+document.querySelectorAll('.seg').forEach(seg => seg.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  seg.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  estado[seg.dataset.for] = b.dataset.uf;
+  if (seg.dataset.for === 'pizza') {
+    const f = document.getElementById('fig-pizza');
+    f.classList.toggle('t', b.dataset.uf === 'Tocantins');
+    fig(f, b.dataset.uf === 'Amazonas' ? 'uso_am' : 'uso_to', true);
+  }
+  montar();
+}));
+
+// ----- navegação -----
+function montar() {
+  const g = slides[atual].dataset.g;
+  if (g === 'pizza') pizza();
+  if (g === 'torres') torres();
+  if (g === 'subida') subida();
+}
+function ir(n) {
+  atual = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => { s.classList.toggle('on', i === atual); if (i === atual) s.scrollTop = 0; });
+  document.body.classList.toggle('escuro', slides[atual].classList.contains('s3'));
+  document.getElementById('cont').textContent = (atual + 1) + ' / ' + slides.length;
+  fecharPainel(false); parar(); montar();
+}
+document.getElementById('ant').onclick = () => ir(atual - 1);
+document.getElementById('prox').onclick = () => ir(atual + 1);
+addEventListener('keydown', e => {
+  if (e.key === 'Escape') return fecharPainel();
+  if (!painel.hidden) return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown') ir(atual + 1);
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') ir(atual - 1);
+});
+let x0 = null, y0 = null;
+addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+addEventListener('touchend', e => {
+  if (x0 === null || !painel.hidden || e.target.closest('canvas,input')) { x0 = null; return; }
+  const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) ir(atual + (dx < 0 ? 1 : -1));
+  x0 = null;
+}, { passive: true });
+ir(0);
+</script>
+</body>
+</html>
